@@ -7,11 +7,14 @@ using System;
 using System.Collections.Generic;
 using System.Windows;
 
-using Primo.TiP.Activities.Properties;
-
 using System.Resources;
 using System.Net.Http;
 using Newtonsoft.Json.Linq;
+
+using Primo.TiP.Activities.Properties;
+using Primo.TiP.Model;
+using Newtonsoft.Json;
+using LTools.Common.Helpers;
 
 namespace Primo.TiP.Activities
 {
@@ -32,13 +35,6 @@ namespace Primo.TiP.Activities
 
         private Design.GetDataActivity_Form cbase;
         const string _defaultUrl = "https://api.traininprogress.ai/api-fin/predict";
-        private string _serverUrl = _defaultUrl;
-        private string _token;
-        private string _result;
-        private string _type;
-        private string _file;
-
-        private ExecutionResult executionResult = new ExecutionResult();
 
         #endregion
 
@@ -48,6 +44,7 @@ namespace Primo.TiP.Activities
 
         ///URL сервера TiP
         /// 
+        private string _serverUrl = _defaultUrl;
         [LTools.Common.Model.Serialization.StoringProperty]
         [LTools.Common.Model.Studio.ValidateReturnScript(DataType = typeof(String))]
         [LocalizedCategory("GROUP_SERVER", typeof(Resources))]
@@ -60,6 +57,7 @@ namespace Primo.TiP.Activities
 
         ///Токен к серверу TiP
         /// 
+        private string _token;
         [LTools.Common.Model.Serialization.StoringProperty]
         [LTools.Common.Model.Studio.ValidateReturnScript(DataType = typeof(String))]
         [LocalizedCategory("GROUP_SERVER", typeof(Resources))]
@@ -72,6 +70,7 @@ namespace Primo.TiP.Activities
 
         ///Файл для распознавания
         /// 
+        private string _file;
         [LTools.Common.Model.Serialization.StoringProperty]
         [LTools.Common.Model.Studio.ValidateReturnScript(DataType = typeof(String))]
         [LocalizedCategory("GROUP_INPUT", typeof(Resources))]
@@ -84,6 +83,7 @@ namespace Primo.TiP.Activities
 
         /// Out_Argument
         /// 
+        private string _result;
         [LTools.Common.Model.Serialization.StoringProperty]
         [LTools.Common.Model.Studio.ValidateReturnScript(DataType = typeof(String))]
         [LocalizedCategory("GROUP_OUTPUT", typeof(LTools.Desktop.Properties.Strings))]
@@ -94,9 +94,10 @@ namespace Primo.TiP.Activities
             get { return this._result; }
             set { this._result = value; this.InvokePropertyChanged(this, nameof(ExtractionResult)); }
         }
-        
-        /// Out_Argument
+
+        /// Out_Argument: Type of document
         /// 
+        private string _type;
         [LTools.Common.Model.Serialization.StoringProperty]
         [LTools.Common.Model.Studio.ValidateReturnScript(DataType = typeof(String))]
         [LocalizedCategory("GROUP_OUTPUT", typeof(LTools.Desktop.Properties.Strings))]
@@ -108,9 +109,22 @@ namespace Primo.TiP.Activities
             set { this._type = value; this.InvokePropertyChanged(this, nameof(DocType)); }
         }
 
+        /// Out_Argument: Document model
+        /// 
+        private string _model;
+        [LTools.Common.Model.Serialization.StoringProperty]
+        [LTools.Common.Model.Studio.ValidateReturnScript(DataType = typeof(Document))]
+        [LocalizedCategory("GROUP_OUTPUT", typeof(LTools.Desktop.Properties.Strings))]
+        [LocalizedDisplayName("PROP_MODEL", typeof(Resources))]
+        public string DocumentModel
+        {
+            get { return this._model; }
+            set { this._model = value; this.InvokePropertyChanged(this, nameof(DocumentModel)); }
+        }
+
         #endregion
 
-        private string trans(string text, Type type = null)
+        private string trans(string text, System.Type type = null)
         {
             type = type ?? typeof(Resources);
             return new ResourceManager(type).GetString(text);
@@ -161,6 +175,10 @@ namespace Primo.TiP.Activities
             sdkComponentHelp += "\r\n"
                              + trans("PROP_RESULT") + "*: "
                              + trans("PROP_RESULT_DESC");
+
+            sdkComponentHelp += "\r\n"
+                             + trans("PROP_MODEL") + "*: "
+                             + trans("PROP_MODEL_DESC");
 
             sdkComponentHelp += "\r\n"
                              + trans("PROP_TYPE") + "*: "
@@ -217,7 +235,16 @@ namespace Primo.TiP.Activities
                     ToolTip = trans("PROP_TYPE_DESC"),
                     IsReadOnly = false
                 }
-
+                ,
+                new LTools.Common.Helpers.WFHelper.PropertiesItem()
+                {
+                    PropName = nameof(DocumentModel),
+                    PropertyType = LTools.Common.Helpers.WFHelper.PropertiesItem.PropertyTypes.SCRIPT,
+                    EditorType = ScriptEditorTypes.NONE,
+                    DataType = typeof(Document),
+                    ToolTip = trans("PROP_MODEL_DESC"),
+                    IsReadOnly = false
+                }
             };
 
             Design.GetDataActivity_Form inputform = new Design.GetDataActivity_Form();
@@ -280,10 +307,12 @@ namespace Primo.TiP.Activities
             try
             {
                 data = GetResult(prop_url, prop_token, prop_file, executionResult);
-                var jsonData = JArray.Parse(data);
-                var type = jsonData[0]["type"]["value"];
+                var document = JsonConvert.DeserializeObject<List<Document>>(data);
+
                 SetVariableValue<string>(this.ExtractionResult, data, sd);
-                SetVariableValue<string>(this.DocType, type.ToString(), sd);
+                SetVariableValue<string>(this.DocType, document[0].Type.Value, sd);
+                SetVariableValue<Document>(this.DocumentModel, document[0], sd);
+                
             }
             catch (Exception ex)
             {

@@ -160,4 +160,10 @@
   <data name="ERR_NO_TOKEN" xml:space="preserve">
     <value>Пожалуйста, укажите токен авторизации на сервере TiP</value>
   </data>
+  <data name="PROP_MODEL_DESC" xml:space="preserve">
+    <value>Результаты в виде объектной модели</value>
+  </data>
+  <data name="PROP_MODEL" xml:space="preserve">
+    <value>Данные</value>
+  </data>
 </root>

@@ -184,4 +184,10 @@
   <data name="ERR_NO_TOKEN" xml:space="preserve">
     <value>Please provide authorization token for TiP server</value>
   </data>
+  <data name="PROP_MODEL_DESC" xml:space="preserve">
+    <value>Extraction result as deserialized object structure</value>
+  </data>
+  <data name="PROP_MODEL" xml:space="preserve">
+    <value>Data</value>
+  </data>
 </root>

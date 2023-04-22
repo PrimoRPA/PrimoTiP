@@ -169,6 +169,24 @@ namespace Primo.TiP.Activities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Data.
+        /// </summary>
+        public static string PROP_MODEL {
+            get {
+                return ResourceManager.GetString("PROP_MODEL", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Extraction result as deserialized object structure.
+        /// </summary>
+        public static string PROP_MODEL_DESC {
+            get {
+                return ResourceManager.GetString("PROP_MODEL_DESC", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Result.
         /// </summary>
         public static string PROP_RESULT {
