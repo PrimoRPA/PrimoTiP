@@ -178,4 +178,10 @@
   <data name="PROP_TYPE_DESC" xml:space="preserve">
     <value>The document was classified by TiP server as the following document type</value>
   </data>
+  <data name="ERR_NO_SERVER" xml:space="preserve">
+    <value>Please provide TiP server URL for connection</value>
+  </data>
+  <data name="ERR_NO_TOKEN" xml:space="preserve">
+    <value>Please provide authorization token for TiP server</value>
+  </data>
 </root>

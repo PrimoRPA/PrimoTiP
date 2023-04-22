@@ -88,6 +88,24 @@ namespace Primo.TiP.Activities.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Please provide TiP server URL for connection.
+        /// </summary>
+        public static string ERR_NO_SERVER {
+            get {
+                return ResourceManager.GetString("ERR_NO_SERVER", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Please provide authorization token for TiP server.
+        /// </summary>
+        public static string ERR_NO_TOKEN {
+            get {
+                return ResourceManager.GetString("ERR_NO_TOKEN", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to No data returned.
         /// </summary>
         public static string ERR_NOCODE {
@@ -151,7 +169,7 @@ namespace Primo.TiP.Activities.Properties {
         }
         
         /// <summary>
-        ///   Looks up a localized string similar to ExtractionResult.
+        ///   Looks up a localized string similar to Result.
         /// </summary>
         public static string PROP_RESULT {
             get {

@@ -50,6 +50,9 @@
     <Reference Include="LTools.SDK">
       <HintPath>C:\Program Files\Primo\Primo Studio x64\LTools.SDK.dll</HintPath>
     </Reference>
+    <Reference Include="LTools.Workflow">
+      <HintPath>..\..\..\Program Files\Primo\Primo Studio x64\LTools.Workflow.dll</HintPath>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>packages\Newtonsoft.Json.12.0.3\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
@@ -72,7 +75,6 @@
     <Compile Include="Design\GetDataActivity_Form.xaml.cs">
       <DependentUpon>GetData_Form.xaml</DependentUpon>
     </Compile>
-    <Compile Include="Helpers\AsyncHelpers.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>

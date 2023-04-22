@@ -24,5 +24,10 @@ namespace Primo.TiP.Design
         {
             InitializeComponent();
         }
+
+        private void btnBrowse_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }

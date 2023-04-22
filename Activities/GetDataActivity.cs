@@ -1,23 +1,17 @@
-﻿using LTools.Common.Helpers;
-using LTools.Common.Model;
+﻿using LTools.Common.Model;
 using LTools.Common.UIElements;
 using LTools.Common.WFItems;
 using LTools.SDK;
 
 using System;
 using System.Collections.Generic;
-using System.Drawing;
 using System.Windows;
 
 using Primo.TiP.Activities.Properties;
 
 using System.Resources;
-using System.Reflection;
 using System.Net.Http;
-using System.Threading.Tasks;
-using System.Security;
 using Newtonsoft.Json.Linq;
-
 
 namespace Primo.TiP.Activities
 {
@@ -286,13 +280,17 @@ namespace Primo.TiP.Activities
             try
             {
                 data = GetResult(prop_url, prop_token, prop_file, executionResult);
-            } catch (Exception ex)
+                var jsonData = JObject.Parse(data);
+                var type = jsonData["type"]["value"];
+                SetVariableValue<string>(this.ExtractionResult, data, sd);
+                SetVariableValue<string>(this.DocType, type.ToString(), sd);
+            }
+            catch (Exception ex)
             {
                 executionResult.IsSuccess = false;
                 executionResult.ErrorMessage = ex?.Message;
             }
 
-            SetVariableValue<string>(this.ExtractionResult, data, sd);
 
             #endregion
 

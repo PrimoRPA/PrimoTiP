@@ -154,4 +154,10 @@
   <data name="PROP_TYPE_DESC" xml:space="preserve">
     <value>Классификация документа, полученная от сервера TiP</value>
   </data>
+  <data name="ERR_NO_SERVER" xml:space="preserve">
+    <value>Пожалуйста, укажите имя сервера TiP для подключения</value>
+  </data>
+  <data name="ERR_NO_TOKEN" xml:space="preserve">
+    <value>Пожалуйста, укажите токен авторизации на сервере TiP</value>
+  </data>
 </root>
