@@ -280,8 +280,8 @@ namespace Primo.TiP.Activities
             try
             {
                 data = GetResult(prop_url, prop_token, prop_file, executionResult);
-                var jsonData = JObject.Parse(data);
-                var type = jsonData["type"]["value"];
+                var jsonData = JArray.Parse(data);
+                var type = jsonData[0]["type"]["value"];
                 SetVariableValue<string>(this.ExtractionResult, data, sd);
                 SetVariableValue<string>(this.DocType, type.ToString(), sd);
             }
